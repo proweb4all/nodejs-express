@@ -29,7 +29,8 @@ async function start() {
     const url = `mongodb+srv://user:User99@cluster0-hwzqn.mongodb.net/shop`
     await mongoose.connect(url, {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      useFindAndModify: false
     })  
     // useNewUrlParser: true
     app.listen(PORT, () => {
