@@ -6,7 +6,7 @@ router.get('/', async (req, res) => {
   const courses = await Course.find()
     .populate('userId', 'name email')
     .select('title price img').lean() 
-  console.log(courses)
+  //console.log(courses)
   res.render('courses', {
     title: 'Курсы',
     isCourses: true,
