@@ -29,3 +29,12 @@
 .form-delete{
   margin-top: 15px;
 }
+
+.alert{
+  padding: 10px 15px;
+  border-radius: 10px;
+  text-align: center;
+  margin-top: 2rem;
+  background-color: rgba(255, 0, 0, .2);
+  color: red;
+}
