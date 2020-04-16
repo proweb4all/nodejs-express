@@ -15,6 +15,7 @@ const authRoutes = require('./routes/auth')
 const varMiddleware = require('./middleware/variables')
 const userMiddleware = require('./middleware/user')
 const keys = require('./keys')
+// const sgkey = require('./keys/sgkey') //node-express\keys\sgkey.js
 const app = express()
 const hbs = exphbs.create({
   defaultLayout: 'main',
