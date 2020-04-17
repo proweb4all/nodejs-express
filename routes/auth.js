@@ -1,5 +1,5 @@
 const {Router} = require('express')
-const bcript = require('bcryptjs')
+const bcrypt = require('bcryptjs')
 const crypto = require('crypto')
 const nodemailer = require('nodemailer')
 const sendgrid = require('nodemailer-sendgrid-transport')
@@ -34,9 +34,8 @@ router.post('/login', async (req, res) => {
     const {email, password} = req.body
     const candidate = await User.findOne({email})
     if (candidate) {
-      const areSame = await bcript.compare(password, candidate.password)
+      const areSame = await bcrypt.compare(password, candidate.password)
       if (areSame) {
-        //const user = await User.findById('5e82435ba4e6901eacd1d68d')
         req.session.user = candidate
         req.session.isAuthenticated = true
         req.session.save(err => {
@@ -66,14 +65,12 @@ router.post('/register', async (req, res) => {
       req.flash('registerError', 'Пользователь с таким email уже зарегистрирован.')
       res.redirect('/auth/login#register')
     } else {
-      const hashPassword = await bcript.hash(password, 10) 
-      console.log('hashPassword:', hashPassword)
+      const hashPassword = await bcrypt.hash(password, 10) 
       const user = new User({
         name, email, password: hashPassword, cart: {items: []}
       })
       await user.save()
       res.redirect('/auth/login#login')
-      console.log(regEmail(email))
       await transporter.sendMail(regEmail(email))
     }
   } catch (e) {
@@ -109,6 +106,52 @@ router.post('/reset', (req, res) => {
         res.redirect('/auth/reset')
       }
     })
+  } catch (e) {
+    console.log(e)
+  }
+})
+
+router.get('/password/:token', async (req, res) => {
+  if (!req.params.token) {
+    return res.redirect('/auth/login')
+  }
+  try {
+    const user = await User.findOne({
+      resetToken: req.params.token,
+      resetTokenExp: {$gt: Date.now()}
+    })
+    if (!user) {
+      return res.redirect('/auth/login')
+    } else {
+      res.render('auth/password', {
+        title: 'Смена пароля',
+        error: req.flash('error'),
+        userId: user._id.toString(),
+        token: req.params.token
+      })
+    }
+  } catch (e) {
+    console.log(e)
+  }
+})
+
+router.post('/password', async (req, res) => {
+  try {
+    const user = await User.findOne({
+      _id: req.body.userId,
+      resetToken: req.body.token,
+      resetTokenExp: {$gt: Date.now()}
+    })
+    if (user) {
+      user.password = await bcrypt.hash(req.body.password, 10) 
+      user.resetToken = undefined
+      user.resetTokenExp = undefined
+      await user.save()
+      res.redirect('/auth/login')
+    } else {
+      req.flash('loginError', 'Время попытки смены пароля истекло')
+      res.redirect('/auth/login')
+    }
   } catch (e) {
     console.log(e)
   }
