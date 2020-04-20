@@ -31,7 +31,7 @@
       <p class='alert'>{{registerError}}</p>
     {{/if}}
     <h3 class="center">Регистрация аккаунта</h2>
-    <form action='/auth/register' method='POST'>
+    <form action='/auth/register' method='POST' novalidate> {{!-- novalidate --}}
       <div class="input-field">
         <input id="name" name="name" type="text" class="validate" required>
         <label for="name">Ваше имя</label>
