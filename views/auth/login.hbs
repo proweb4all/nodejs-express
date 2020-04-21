@@ -9,6 +9,9 @@
     {{#if loginError}}
       <p class='alert'>{{loginError}}</p>
     {{/if}}
+    {{#if registerSuccessful}}
+      <p class='success'>{{registerSuccessful}}</p>
+    {{/if}}
     <h3 class="center">Войти в аккаунт</h3>
     <form action='/auth/login' method='POST'>
       <div class="input-field">

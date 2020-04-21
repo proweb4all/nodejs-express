@@ -39,6 +39,16 @@
   color: red;
 }
 
+.success{
+  padding: 7px 15px;
+  border-radius: 10px;
+  text-align: center;
+  margin-top: 1rem;
+  background-color: rgba(0, 255, 0, .2);
+  color: green;
+
+}
+
 .user-mail{
   margin: 0;
   padding: 7px 15px;
