@@ -9,7 +9,7 @@ const keys = require('../keys')
 const sgkey = require('../keys/sgkey')
 const regEmail = require('../emails/registration')
 const resetEmail = require('../emails/reset')
-const {registerValidators} = require('../utils/validators')
+const {registerValidators, loginValidators} = require('../utils/validators')
 const router = Router()
 
 const transporter = nodemailer.createTransport(sendgrid({
@@ -32,7 +32,7 @@ router.get('/logout', async (req, res) => {
   })
 })
 
-router.post('/login', async (req, res) => {
+router.post('/login', loginValidators, async (req, res) => {
   try {
     const {email, password} = req.body
     const candidate = await User.findOne({email})
@@ -59,7 +59,7 @@ router.post('/login', async (req, res) => {
     console.log(e)
   }
 })
-
+ 
 router.post('/register', registerValidators, async (req, res) => {
   try {
     const {email, password, name} = req.body
