@@ -56,3 +56,7 @@
   line-height: 1;
   color: black;
 }
+
+.avatar{
+  max-width: 300px;
+}
