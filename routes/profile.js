@@ -1,5 +1,4 @@
 const {Router} = require('express')
-// const {validationResult} = require('express-validator')
 const User = require('../models/user')
 const auth = require('../middleware/auth')
 const router = Router()
@@ -18,15 +17,15 @@ router.post('/', auth, async (req, res) => {
     const toChange = {
       name: req.body.name
     }
-    console.log(req.file)
+    // console.log(req.file)
     if (req.file) {
-      toChange.avatarUrl = ''
+      toChange.avatarUrl = req.file.path
     }
-    Object.assign(user,toChange)
+    Object.assign(user, toChange)
     await user.save()
     res.redirect('/profile')
   } catch (e) {
-    console.log(e)
+    console.log('Здесь? ', e)
   }
 })
 
