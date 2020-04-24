@@ -6,14 +6,13 @@ const nodemailer = require('nodemailer')
 const sendgrid = require('nodemailer-sendgrid-transport')
 const User = require('../models/user')
 const keys = require('../keys')
-const sgkey = require('../keys/sgkey')
 const regEmail = require('../emails/registration')
 const resetEmail = require('../emails/reset')
 const {registerValidators, loginValidators} = require('../utils/validators')
 const router = Router()
 
 const transporter = nodemailer.createTransport(sendgrid({
-  auth: { api_key: sgkey.SENDGRID_API_KEY }
+  auth: { api_key: keys.SENDGRID_API_KEY }
 }))
 
 router.get('/login', async (req, res) => {
